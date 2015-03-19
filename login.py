@@ -24,32 +24,36 @@ go = int(input('選擇資料夾編號(輸入0返回上一頁):'))
 
 r = requests.get(courses[go-1]['href'])
 serial = r.url.split('=')[1]
-r = sess.get('https://ceiba.ntu.edu.tw/modules/index.php?csn='+serial+'&default_fun=hw&current_lang=chinese')
-r = sess.get('https://ceiba.ntu.edu.tw/modules/main.php?csn='+serial+'&default_fun=hw&current_lang=chinese')
+r = sess.get('https://ceiba.ntu.edu.tw/modules/index.php?csn='+
+        serial+'&default_fun=hw&current_lang=chinese')
+r = sess.get('https://ceiba.ntu.edu.tw/modules/main.php?csn='+
+        serial+'&default_fun=hw&current_lang=chinese')
 r = sess.get(r.url)
-print(r.content.decode('big5'))
 
 soup = BeautifulSoup(r.content.decode('big5'))
 hw = soup.find_all('tr')
 for idx,item in enumerate(hw):
-    print(idx+1,'.',item.td.string)
-go = int(input('選擇作業'))
+    try:
+        print(idx+1,'.',item.td.string)
+    except:
+        pass
+go = int(input('選擇作業:'))
 
-r = sess.get('https://ceiba.ntu.edu.tw/modules/hw/'+hw[go-1].td['href'])
+r = sess.get('https://ceiba.ntu.edu.tw/modules/hw/'+hw[go-1].a['href'])
+print(r.content.decode('big5'))
 
 path = input('輸入上傳檔案路徑:')
-limit = input('自己的檔案大小上限自己設(?)(Bytes)')
+limit = input('自己的檔案大小上限自己設(?)(Bytes):')
 
 upload_data = {
     'op':'hw_upload',
     'hw_sn':'114530',
-    'old_file':'fjdsoia.cpp',
-    'MAX_FILE_SIZE':limit,
-    'file':'',
+    'old_file':'/hw114530/hw114530_b03705024_e43d16c2c6814a2_336.png',
+    'MAX_FILE_SIZE':200000000000,
     'Submit2':'確定並送出'
 }
 
-sess.post('https://ceiba.ntu.edu.tw/modules/hw/hw_show.php?current_lang=chinese',
+r = sess.post('https://ceiba.ntu.edu.tw/modules/hw/hw_show.php?current_lang=chinese',
         data = upload_data,
-        files = path)
-
+        files = {'a': open(path,'rb')})
+print(r.headers)
