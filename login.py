@@ -55,5 +55,4 @@ upload_data = {
 
 r = sess.post('https://ceiba.ntu.edu.tw/modules/hw/hw_show.php?current_lang=chinese',
         data = upload_data,
-        files = {'a': open(path,'rb')})
-print(r.headers)
+        files = {'file': open(path,'rb')})
