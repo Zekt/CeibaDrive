@@ -24,9 +24,9 @@ go = int(input('選擇資料夾編號(輸入0返回上一頁):'))
 
 r = requests.get(courses[go-1]['href'])
 serial = r.url.split('=')[1]
-r = sess.get('https://ceiba.ntu.edu.tw/modules/index.php?csn='+
+sess.get('https://ceiba.ntu.edu.tw/modules/index.php?csn='+
         serial+'&default_fun=hw&current_lang=chinese')
-r = sess.get('https://ceiba.ntu.edu.tw/modules/main.php?csn='+
+sess.get('https://ceiba.ntu.edu.tw/modules/main.php?csn='+
         serial+'&default_fun=hw&current_lang=chinese')
 r = sess.get(r.url)
 
@@ -43,7 +43,6 @@ r = sess.get('https://ceiba.ntu.edu.tw/modules/hw/'+hw[go-1].a['href'])
 print(r.content.decode('big5'))
 
 path = input('輸入上傳檔案路徑:')
-limit = input('自己的檔案大小上限自己設(?)(Bytes):')
 
 upload_data = {
     'op':'hw_upload',
